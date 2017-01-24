@@ -1,3 +1,6 @@
+util = require 'util'
+child_process = require 'child_process'
+
 module.exports = (robot) ->
     robot.respond /committee/i, (msg) ->
         text = ">>>Committee: \n"
@@ -16,13 +19,13 @@ module.exports = (robot) ->
         mailArgs = ['-s', subject, '-a', "From: #{from}", '--']
         mailArgs = mailArgs.concat recipients
         p = child_process.execFile 'mail', mailArgs, {}, (error, stdout, stderr) ->
-            util.print 'stdout: ' + stdout
-            util.print 'stderr: ' + stderr
+            console.log 'stdout: ' + stdout
+            console.log 'stderr: ' + stderr
         p.stdin.write "#{msg}\n"
         p.stdin.end()
     standardPreamble = "The following feedback was sent via Slack:\n\n"
 
     robot.respond /feedback (.*)/i, (msg) ->
         sendEmail process.env.HUBOT_FEEDBACK_EMAIL, "Feedback from Slack", standardPreamble +  msg.match[1], msg.message.user.id
-        msg.send "Your feedback has been sent"
+        msg.send "Your feedback has been sent"  
         
