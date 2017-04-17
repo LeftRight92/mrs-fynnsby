@@ -1,5 +1,5 @@
 [
   "hubot-heroku-keepalive",
   "hubot-redis-brain",
-  "hubot-slack-attachment",
+  "hubot-slack-attachment"
 ]
