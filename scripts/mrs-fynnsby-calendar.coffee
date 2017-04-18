@@ -49,10 +49,10 @@ module.exports = (robot) ->
         content:
           fallback: events[0].summary
           title: "Next Event: " + events[0].summary
-          text: events[0].description
+          text: if events[0].description then "#{events[0].description}" else ''
           fields: [{
             title: "Location"
-            value: events[0].location
+            value: if events[0].location then "#{events[0].location}" else ''
           },{
             title: "Time"
             value: events[0].start.format('dddd, hh:mma')
@@ -67,7 +67,7 @@ module.exports = (robot) ->
                 return
               {
               title: e.summary
-              value: e.start.format('Do MMM hh:mma')
+              value: e.start.format('Do MMM hh:mma') + if e.location then "#{e.location}" else ''
               }
           ]
       #msg.send events[0].summary
