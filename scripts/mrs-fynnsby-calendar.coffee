@@ -13,11 +13,11 @@ module.exports = (robot) ->
       today = moment(0, "HH")
       events = (data[key] for key of data).map (e) ->
         e.start = moment(e.start)
-        e.end = moment(e.end)
+        #e.end = moment(e.end)
         e
       .filter (e) -> e.start.isSameOrAfter(today, 'day')
 
-      events.shift(); #remove the weird 'undefined' event always at the start
+      events.shift() #remove the weird 'undefined' event always at the start
 
       text += "Event Count: #{events.length}\n"
 
@@ -28,7 +28,11 @@ module.exports = (robot) ->
         msg.send "There are no events currently on the calendar."
         return
 
-      firstEvent = events.shift();
+      firstEvent = () ->
+        events.shift()
+        events.shift()
+
+      firstEvent.start = moment(firstEvent.start)
       text += firstEvent.summary + "\n"
 
       text += events.map (e) ->
@@ -43,14 +47,27 @@ module.exports = (robot) ->
       robot.emit 'slack.attachment',
         message: "Events Information:"
         content:
-          fallback: firstEvent.summary
-          title: firstEvent.summary
-          text: firstEvent.description
+          fallback: events[0].summary
+          title: "Next Event: " + events[0].summary
+          text: events[0].description
           fields: [{
             title: "Location"
-            value: firstEvent.location
+            value: events[0].location
           },{
             title: "Time"
-            value: firstEvent.start.format('dddd, hh:mma')
+            value: events[0].start.format('dddd, hh:mma')
           }]
-      #msg.send text
+      robot.emit 'slack.attachment',
+        content:
+          fallback: ""
+          title: "Other Upcomine Events"
+          fields: [
+            events.map (e) ->
+              if e.summary is events[0].summary
+                return
+              {
+              title: e.summary
+              value: e.start.format('Do MMM hh:mma')
+              }
+          ]
+      #msg.send events[0].summary
