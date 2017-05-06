@@ -45,7 +45,7 @@ module.exports = (robot) ->
             e.start.format('Do MMM hh:mma')
         "#{e.summary}#{location} (#{start})"
       .join "\n"
-      msg.send msg.channel
+      msg.room = msg.message.room
       robot.emit 'slack.attachment',
         message: "Events Information:"
         content:
