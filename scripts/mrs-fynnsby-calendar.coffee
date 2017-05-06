@@ -7,6 +7,7 @@ config =
 
 module.exports = (robot) ->
   robot.respond /events/i, (msg) ->
+    #msg.send robot.sdfsdfsd
     text = "test \n"
     #retrieve the events
     ical.fromURL config.calendar, {}, (err, data) ->
@@ -44,12 +45,14 @@ module.exports = (robot) ->
             e.start.format('Do MMM hh:mma')
         "#{e.summary}#{location} (#{start})"
       .join "\n"
+      msg.send msg.channel
       robot.emit 'slack.attachment',
         message: "Events Information:"
         content:
           fallback: events[0].summary
           title: "Next Event: " + events[0].summary
           text: if events[0].description then "#{events[0].description}" else ''
+          channel: msg.message.channel
           fields: [{
             title: "Location"
             value: if events[0].location then "#{events[0].location}" else ''
@@ -60,7 +63,8 @@ module.exports = (robot) ->
       robot.emit 'slack.attachment',
         content:
           fallback: ""
-          title: "Other Upcomine Events"
+          title: "Other Upcoming Events"
+          channel: msg.message.channel
           fields: [
             events.map (e) ->
               if e.summary is events[0].summary
