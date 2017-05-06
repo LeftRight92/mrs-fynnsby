@@ -30,4 +30,4 @@ module.exports = (robot) ->
     msg.send "Your feedback has been sent"
 
   robot.respond /room/i, (msg) ->
-    msg.send msg.room
+    msg.send msg.message.room
