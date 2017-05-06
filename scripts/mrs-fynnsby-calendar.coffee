@@ -74,4 +74,4 @@ module.exports = (robot) ->
               value: e.start.format('Do MMM hh:mma') + if e.location then "#{e.location}" else ''
               }
           ]
-      #msg.send events[0].summary
+      msg.send "If this is not followed with an attachment, then we still haven't solved the problem."
