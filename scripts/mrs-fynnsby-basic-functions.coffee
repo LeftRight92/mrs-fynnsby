@@ -28,3 +28,6 @@ module.exports = (robot) ->
   robot.respond /feedback (.*)/i, (msg) ->
     sendEmail process.env.HUBOT_FEEDBACK_EMAIL, "Feedback from Slack", standardPreamble +  msg.match[1], msg.message.user.id
     msg.send "Your feedback has been sent"
+
+  robot.respond /room/i, (msg) ->
+    msg.send msg.room
