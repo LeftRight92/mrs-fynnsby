@@ -49,7 +49,7 @@ module.exports = (robot) ->
       robot.emit 'slack.attachment',
         message: "Events Information:"
         content:
-          fallback: events[0].summary
+          fallback: events[0].summary || "woopsie-dasie"
           title: "Next Event: " + events[0].summary
           text: if events[0].description then "#{events[0].description}" else ''
           channel: msg.message.channel
