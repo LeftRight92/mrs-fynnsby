@@ -49,15 +49,15 @@ module.exports = (robot) ->
       msg.send {
           attachments: [
               {
-                  fallback:
+                  fallback: "Uh-oh, error!"
                   pretext: "Here's the next event: "
                   title: "Next Event: " + events[0].summary
-                  text: if events[0].description then "#{events[0]/.description}" else ""
+                  text: if events[0].description then "#{events[0].description}" else ""
                   fields: [
                       {
                           title: "Location"
                           value: if events[0].location then "#{events[0].location}" else ""
-                      },
+                      }
                       {
                           title: "Time"
                           value: events[0].start.format('dddd, hh:mma')
