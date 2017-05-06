@@ -31,3 +31,16 @@ module.exports = (robot) ->
 
   robot.respond /room/i, (msg) ->
     msg.send msg.message.room
+
+  robot.respond /attachment/i, (msg) ->
+    msg.send {
+        "attachments": [
+            {
+                "fallback": "TEST"
+                "color": "#36a64f"
+                "pretext": "Here is some pretext"
+                "title": "Attachment Title"
+                "text": "This is the attachment text body"
+            }
+        ]
+    }
